@@ -31,7 +31,9 @@ apt install -y \
     qttools5-private-dev \
     qtquickcontrols2-5-dev \
     libssl-dev \
-    libgstreamer-plugins-base1.0-dev
+    libgstreamer-plugins-base1.0-dev \
+    git \
+    build-essential
 
 echo "--- Building qtlocation"
 
