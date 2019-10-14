@@ -10,6 +10,7 @@ jobs:
   include:
     - name: "Qemu-based build"
       arch: amd64
+      dist: bionic
       before_script:
         - docker run --rm --privileged sfalexrog/qemu-register:v4.1.0
       script:
