@@ -4,7 +4,7 @@ language: cpp
 
 env:
   global:
-    - JOBS=4
+    - JOBS=6
     # QT_FATAL_WARNINGS is turned off because Qt 5.11.3 throws a speech dispatcher not working warning when running unit tests
     #- QT_FATAL_WARNINGS=1
     - SHADOW_BUILD_DIR=/tmp/shadow_build_dir
@@ -39,6 +39,13 @@ matrix:
 #          osx_image: xcode10.1
 #          env: SPEC=macx-clang CONFIG=debug
 #          sudo: required
+        - os: linux
+          arch: arm64
+          dist: bionic
+          sudo: required
+          services:
+            - docker
+          env: ARCH=arm
 
 android:
   components:
@@ -147,14 +154,23 @@ before_script:
         openssl enc -d -aes-256-cbc -in ${TRAVIS_BUILD_DIR}/android/coex_qgc.jks.enc -out ${TRAVIS_BUILD_DIR}/android/coex_qgc.jks -k ${ANDROID_STOREKEY};
     fi
 
+  # pull docker container with all dependencies
+  - if [ "${ARCH}" = "arm" ]; then
+        sudo docker pull sfalexrog/qgc_builder:buster-0.1.0;
+    fi
+
 script:
   # run qmake
   - mkdir ${SHADOW_BUILD_DIR} && cd ${SHADOW_BUILD_DIR}
   # Due to possible bug in Qt 5.11 WarningsAsErrorsOn is off for Linux builds. Hopefully back on once that is resolved.
+  # TODO: make a better check for arm builds
   - if [ "${SPEC}" = "macx-clang" ]; then
         qmake -r ${TRAVIS_BUILD_DIR}/qgroundcontrol.pro CONFIG+=${CONFIG} CONFIG+=WarningsAsErrorsOn -spec ${SPEC};
-    else
+    elif [ "${ARCH}" != "arm" ]; then
         qmake -r ${TRAVIS_BUILD_DIR}/qgroundcontrol.pro CONFIG+=${CONFIG} -spec ${SPEC};
+    else
+        cd .. &&
+        sudo docker run --rm -v $(pwd):/build sfalexrog/qgc_builder:buster-0.1.0 -v /tmp:/tmp --env ARCH=${ARCH} --env SHADOW_BUILD_DIR=${SHADOW_BUILD_DIR} /bin/bash -c 'cd /build; ./build_arm.sh'
     fi
 
   # compile
@@ -253,6 +269,7 @@ deploy:
     file:
       - ${SHADOW_BUILD_DIR}/release/package/qgroundcontrol.*
       - ${SHADOW_BUILD_DIR}/release/package/QGroundControl.*
+      - ${SHADOW_BUILD_DIR}/release/package/QGroundControl-arm.*
     skip_cleanup: true
     draft: true
     on:
