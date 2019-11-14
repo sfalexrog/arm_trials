@@ -9,7 +9,7 @@ cd ${SHADOW_BUILD_DIR}
 
 echo "Configuring project"
 
-qmake -r /build/qgroundcontrol.pro CONFIG+=installer -spec linux
+qmake -r /build/qgroundcontrol.pro CONFIG+=installer
 
 echo "Building project"
 
