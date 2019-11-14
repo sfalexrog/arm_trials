@@ -12,34 +12,35 @@ env:
 matrix:
     fast_finish: true
     include:
-        - os: linux
-          dist: xenial
-          env: SPEC=linux-g++-64 CONFIG=installer
-          sudo: required
-        - os: linux
-          dist: xenial
-          env: SPEC=linux-g++-64 CONFIG=debug
-          services: xvfb
-          sudo: required
-        - os: android
-          dist: trusty
-          language: android
-          env: SPEC=android-g++ CONFIG=installer
-          sudo: false
-        - os: osx
-          osx_image: xcode9.2
-          env: SPEC=macx-clang CONFIG=installer
-          sudo: required
-        - os: osx
-          osx_image: xcode9.2
-          env: SPEC=macx-ios-clang CONFIG=release
-          sudo: false
-# OSX builds pared back to installer only since travis sucks so bad we can't afford more than one'
-#        - os: osx
-#          osx_image: xcode10.1
-#          env: SPEC=macx-clang CONFIG=debug
+# FIXME: fix all builds
+#        - os: linux
+#          dist: xenial
+#          env: SPEC=linux-g++-64 CONFIG=installer
 #          sudo: required
-        - os: linux
+#        - os: linux
+#          dist: xenial
+#          env: SPEC=linux-g++-64 CONFIG=debug
+#          services: xvfb
+#          sudo: required
+#        - os: android
+#          dist: trusty
+#          language: android
+#          env: SPEC=android-g++ CONFIG=installer
+#          sudo: false
+#        - os: osx
+#          osx_image: xcode9.2
+#          env: SPEC=macx-clang CONFIG=installer
+#          sudo: required
+#        - os: osx
+#          osx_image: xcode9.2
+#          env: SPEC=macx-ios-clang CONFIG=release
+#          sudo: false
+## OSX builds pared back to installer only since travis sucks so bad we can't afford more than one'
+##        - os: osx
+##          osx_image: xcode10.1
+##          env: SPEC=macx-clang CONFIG=debug
+##          sudo: required
+#        - os: linux
           arch: arm64
           dist: bionic
           sudo: required
@@ -53,16 +54,16 @@ android:
     - build-tools-25.0.3
     - platform-tools
 
-addons:
-  apt:
-    packages:
-    - speech-dispatcher
-    - libgstreamer-plugins-base1.0-dev
-    - libgstreamer1.0-0:amd64
-    - libgstreamer1.0-dev
-    - libsdl2-dev
-    - libudev-dev
-    - wget
+#addons:
+#  apt:
+#    packages:
+#    - speech-dispatcher
+#    - libgstreamer-plugins-base1.0-dev
+#    - libgstreamer1.0-0:amd64
+#    - libgstreamer1.0-dev
+#    - libsdl2-dev
+#    - libudev-dev
+#    - wget
 
 before_install:
   # fetch entire git repo to properly determine the version
