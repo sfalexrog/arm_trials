@@ -9,7 +9,7 @@ cd ${SHADOW_BUILD_DIR}
 
 echo "Configuring project"
 
-qmake -r /build/qgroundcontrol.pro CONFIG+=installer
+qmake -r /build/qgroundcontrol.pro CONFIG+=installer DEFINES+=__rasp_pi2__
 
 echo "Building project"
 
