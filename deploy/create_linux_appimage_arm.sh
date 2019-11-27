@@ -81,10 +81,10 @@ echo QGC Version: ${VERSION}
 
 # Go out of AppImage
 cd ${TMPDIR}
-wget -c --quiet "https://github.com/AppImage/AppImageKit/releases/download/12/appimagetool-armhf.AppImage" # (64-bit)
+wget -c --progress=dot:giga "https://github.com/AppImage/AppImageKit/releases/download/12/appimagetool-armhf.AppImage" # (64-bit)
 chmod a+x ./appimagetool-armhf.AppImage
 
-./AppImageAssistant ./$APP.AppDir/ ${TMPDIR}/$APP".AppImage"
+./appimagetool-armhf.AppImage ./$APP.AppDir/ ${TMPDIR}/$APP".AppImage"
 
 cp ${TMPDIR}/$APP".AppImage" ${OUTPUT_DIR}/$APP".AppImage"
 
