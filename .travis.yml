@@ -131,7 +131,7 @@ jobs:
       script:
         - mkdir ${SHADOW_BUILD_DIR} && cd ${SHADOW_BUILD_DIR}
         - qmake -r ${TRAVIS_BUILD_DIR}/qgroundcontrol.pro CONFIG+=${CONFIG} CONFIG+=WarningsAsErrorsOn -spec ${SPEC};
-        - xcodebuild -IDEBuildOperationMaxNumberOfConcurrentCompileTasks=$JOBS -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | xcpretty -c && $(exit ${PIPESTATUS[0]});
+        - make -j$JOBS
     - name: "Raspbian archive"
       os: linux
       arch: arm64
