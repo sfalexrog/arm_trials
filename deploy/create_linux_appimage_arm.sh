@@ -90,5 +90,5 @@ echo "FIXME: Not building AppImage because Travis does not support fuse mounts"
 #cp ${TMPDIR}/$APP".AppImage" ${OUTPUT_DIR}/$APP".AppImage"
 
 echo "FIXME: Packing the contents of AppImage in a .tar.bz2 instead"
-tar --exclude='release/package' -cjf ${TMPDIR}/QGroundControl-arm.app.tar.bz2 ${APPDIR} --transform 's/release/qgroundcontrol'
+tar --exclude='release/package' -cjf ${TMPDIR}/QGroundControl-arm.app.tar.bz2 ${APPDIR} --transform 's/release/qgroundcontrol/'
 cp ${TMPDIR}/QGroundControl-arm.app.tar.bz2 ${OUTPUT_DIR}/QGroundControl-arm.app.tar.bz2
