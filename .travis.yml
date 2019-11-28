@@ -16,6 +16,7 @@ jobs:
       os: linux
       dist: xenial
       env: SPEC=linux-g++-64 CONFIG=debug
+      services: xvfb
       addons:
         apt:
           packages:
