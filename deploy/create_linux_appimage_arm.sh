@@ -79,12 +79,16 @@ EOF
 VERSION=$(strings ${APPDIR}/QGroundControl | grep '^v[0-9*]\.[0-9*].[0-9*]' | head -n 1)
 echo QGC Version: ${VERSION}
 
+echo "FIXME: Not building AppImage because Travis does not support fuse mounts"
 # Go out of AppImage
-cd ${TMPDIR}
-wget -c --progress=dot:giga "https://github.com/AppImage/AppImageKit/releases/download/12/appimagetool-armhf.AppImage" # (64-bit)
-chmod a+x ./appimagetool-armhf.AppImage
+#cd ${TMPDIR}
+#wget -c --progress=dot:giga "https://github.com/AppImage/AppImageKit/releases/download/12/appimagetool-armhf.AppImage" # (64-bit)
+#chmod a+x ./appimagetool-armhf.AppImage
 
-./appimagetool-armhf.AppImage ./$APP.AppDir/ ${TMPDIR}/$APP".AppImage"
+#./appimagetool-armhf.AppImage ./$APP.AppDir/ ${TMPDIR}/$APP".AppImage"
 
-cp ${TMPDIR}/$APP".AppImage" ${OUTPUT_DIR}/$APP".AppImage"
+#cp ${TMPDIR}/$APP".AppImage" ${OUTPUT_DIR}/$APP".AppImage"
 
+echo "FIXME: Packing the contents of AppImage in a .tar.bz2 instead"
+tar --exclude='release/package' -cjf ${TMPDIR}/QGroundControl-arm.app.tar.bz2 ${APPDIR} --transform 's/release/qgroundcontrol'
+cp ${TMPDIR}/QGroundControl-arm.app.tar.bz2 ${OUTPUT_DIR}/QGroundControl-arm.app.tar.bz2
