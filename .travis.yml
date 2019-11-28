@@ -68,7 +68,7 @@ jobs:
       script:
         - mkdir ${SHADOW_BUILD_DIR} && cd ${SHADOW_BUILD_DIR}
         - qmake -r ${TRAVIS_BUILD_DIR}/qgroundcontrol.pro CONFIG+=${CONFIG} -spec ${SPEC}
-        - make -j$JOBS;
+        - make -j$JOBS
       before_deploy:
       - cd ${TRAVIS_BUILD_DIR}
       - ./deploy/create_linux_appimage.sh ${TRAVIS_BUILD_DIR} ${SHADOW_BUILD_DIR}/release ${SHADOW_BUILD_DIR}/release/package
@@ -96,11 +96,8 @@ jobs:
           export ANDROID_NDK_ROOT=`pwd`/android-ndk-r16b &&
           export ANDROID_SDK_ROOT=/usr/local/android-sdk &&
           export PATH=/tmp/Qt5.11-android_armv7/5.11.0/android_armv7/bin:`pwd`/android-ndk-r16b:$PATH && echo $PATH
-          ;
       before_script:
         - cd ${TRAVIS_BUILD_DIR}
-        - git remote set-branches origin 'master' &&
-          git fetch --tags origin master &&
           ./tools/update_android_version.sh;
         - if [[ "${CONFIG}" = "installer" && -z ${ANDROID_STOREPASS} ]]; then
             export CONFIG=release;
@@ -109,6 +106,9 @@ jobs:
             openssl enc -d -aes-256-cbc -in ${TRAVIS_BUILD_DIR}/android/coex_qgc.jks.enc -out ${TRAVIS_BUILD_DIR}/android/coex_qgc.jks -k ${ANDROID_STOREKEY};
           fi
       script:
+        - mkdir ${SHADOW_BUILD_DIR} && cd ${SHADOW_BUILD_DIR}
+        - qmake -r ${TRAVIS_BUILD_DIR}/qgroundcontrol.pro CONFIG+=${CONFIG} -spec ${SPEC}
+        - make -j$JOBS
     - name: "macOS build"
       os: osx
       osx_image: xcode9.2
@@ -128,6 +128,7 @@ jobs:
       before_script:
         - cd ${TRAVIS_BUILD_DIR}
       script:
+        - mkdir ${SHADOW_BUILD_DIR} && cd ${SHADOW_BUILD_DIR}
         - qmake -r ${TRAVIS_BUILD_DIR}/qgroundcontrol.pro CONFIG+=${CONFIG} CONFIG+=WarningsAsErrorsOn -spec ${SPEC};
         - xcodebuild -IDEBuildOperationMaxNumberOfConcurrentCompileTasks=$JOBS -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | xcpretty -c && $(exit ${PIPESTATUS[0]});
     - name: "Raspbian archive"
