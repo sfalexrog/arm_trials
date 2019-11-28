@@ -144,6 +144,9 @@ jobs:
       script:
         - cd ${TRAVIS_BUILD_DIR} &&
           sudo docker run --rm -v $(pwd):/build -v /tmp:/tmp --env ARCH=${ARCH} --env SHADOW_BUILD_DIR=${SHADOW_BUILD_DIR} sfalexrog/qgc_builder:buster-0.1.0 /bin/bash -c 'cd /build; ./build_arm.sh';
+      before_deploy:
+        - cd ${SHADOW_BUILD_DIR}/release/package
+        - mv QGroundControl.tar.bz2 QGroundControl-arm.tar.bz2
 
 deploy:
   - provider: releases
