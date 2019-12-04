@@ -147,6 +147,8 @@ jobs:
       before_deploy:
         - cd ${SHADOW_BUILD_DIR}/release/package
         - sudo mv QGroundControl.tar.bz2 QGroundControl-arm.tar.bz2
+        - sudo chmod -R a+rw ${SHADOW_BUILD_DIR}
+        - cd ${TRAVIS_BUILD_DIR}
 
 deploy:
   - provider: releases
