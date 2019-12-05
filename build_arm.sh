@@ -9,7 +9,11 @@ cd ${SHADOW_BUILD_DIR}
 
 echo "Configuring project"
 
-qmake -r /build/qgroundcontrol.pro CONFIG+=installer DEFINES+=__rasp_pi2__
+if [ "${ARCH}" = "arm64" ]; then
+    qmake -r /build/qgroundcontrol.pro CONFIG+=installer
+else
+    qmake -r /build/qgroundcontrol.pro CONFIG+=installer DEFINES+=__rasp_pi2__
+fi
 
 echo "Building project"
 
