@@ -18,4 +18,9 @@ make -j2
 echo "Preparing deployment"
 
 cd /build
-./deploy/create_linux_appimage_arm.sh /build ${SHADOW_BUILD_DIR}/release ${SHADOW_BUILD_DIR}/release/package
+
+if [ "${ARCH}" = "arm64" ]; then
+    ./deploy/create_linux_appimage_raspbian.sh /build ${SHADOW_BUILD_DIR}/release ${SHADOW_BUILD_DIR}/release/package;
+else 
+    ./deploy/create_linux_appimage_debian64.sh /build ${SHADOW_BUILD_DIR}/release ${SHADOW_BUILD_DIR}/release/package;
+fi

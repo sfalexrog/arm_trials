@@ -140,15 +140,33 @@ jobs:
         - docker
       language: generic
       before_script:
-        - sudo docker pull sfalexrog/qgc_builder:buster-0.1.0;
+        - sudo docker pull copterexpress/qgc_builder:buster-0.1.1-raspbian;
       script:
         - cd ${TRAVIS_BUILD_DIR} &&
-          sudo docker run --rm -v $(pwd):/build -v /tmp:/tmp --env ARCH=${ARCH} --env SHADOW_BUILD_DIR=${SHADOW_BUILD_DIR} sfalexrog/qgc_builder:buster-0.1.0 /bin/bash -c 'cd /build; ./build_arm.sh';
+          sudo docker run --rm -v $(pwd):/build -v /tmp:/tmp --env ARCH=arm32 --env SHADOW_BUILD_DIR=${SHADOW_BUILD_DIR} copterexpress/qgc_builder:buster-0.1.1-raspbian /bin/bash -c 'cd /build; ./build_arm.sh';
       before_deploy:
         - cd ${SHADOW_BUILD_DIR}/release/package
         - sudo mv QGroundControl.tar.bz2 QGroundControl-arm.tar.bz2
         - sudo chmod -R a+rw ${SHADOW_BUILD_DIR}
         - cd ${TRAVIS_BUILD_DIR}
+    - name: "Deb-arm64 archive"
+      os: linux
+      arch: arm64
+      dist: bionic
+      services:
+        - docker
+      language: generic
+      before_script:
+        - sudo docker pull copterexpress/qgc_builder:buster-0.1.1-debian64;
+      script:
+        - cd ${TRAVIS_BUILD_DIR} &&
+          sudo docker run --rm -v $(pwd):/build -v /tmp:/tmp --env ARCH=arm64 --env SHADOW_BUILD_DIR=${SHADOW_BUILD_DIR} copterexpress/qgc_builder:buster-0.1.1-debian64 /bin/bash -c 'cd /build; ./build_arm.sh';
+      before_deploy:
+        - cd ${SHADOW_BUILD_DIR}/release/package
+        - sudo mv QGroundControl.tar.bz2 QGroundControl-arm64.tar.bz2
+        - sudo chmod -R a+rw ${SHADOW_BUILD_DIR}
+        - cd ${TRAVIS_BUILD_DIR}
+
 
 deploy:
   - provider: releases
@@ -158,6 +176,7 @@ deploy:
       - ${SHADOW_BUILD_DIR}/release/package/qgroundcontrol.*
       - ${SHADOW_BUILD_DIR}/release/package/QGroundControl.*
       - ${SHADOW_BUILD_DIR}/release/package/QGroundControl-arm.*
+      - ${SHADOW_BUILD_DIR}/release/package/QGroundControl-arm64.*
     skip_cleanup: true
     draft: true
     on:
